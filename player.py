@@ -9,6 +9,9 @@ import pandas as pd
 
 
 def get_champion_name(champ_id):
+    """
+    Returns the champion name from champions.json given its ID.
+    """
     champ_used = next(champion for _,champion in championsData["data"].items() if champion["key"]==str(champ_id))
     champ_name = champ_used["name"]
     return champ_name
@@ -59,12 +62,18 @@ class Player:
         return name_to_verify in [self.name]
     
     def is_account_id(self, id_to_verify):
+        """
+        Helps identify a player after a name change.
+        """
         return id_to_verify in [self.account_id, self.second_account_id]
 
     def is_player_lane_and_role(self, lane, role):    #checks player lane and role
         return lane == self.lane and role == self.role
     
-    def add_game_data(self, detail, game_duration, participant_timeline): #adds game data to player total stats and to champion played
+    def add_game_data(self, detail, game_duration, participant_timeline):
+        """
+        Adds data from a game to the player's global table and to the champion played.
+        """
         global championsData
         participant_stats = detail['stats']
         self.kills += participant_stats['kills']
@@ -106,6 +115,7 @@ class Player:
             if participant_stats["win"]:
                 champ_stats['wins']+=1
         else:
+            # Adds the champion to the champions dictionary if its the first game played.
             self.champions[champ_name] = {'games':1, 
                                           'kills':participant_stats['kills'], 
                                           'deaths':participant_stats['deaths'], 
@@ -189,8 +199,13 @@ class Player:
     def __str__(self):
         return f"{self.name}: kills: {self.kills}, deaths:{self.deaths}, assists:{self.assists}, games:{self.games}" #todo fill out
     
-    def get_all_stats(self):      #creates player row with general stats for team table and player table with all champions played
-        team_table_row = {}  # row for each player in team table
+    def get_all_stats(self):
+        """
+        Creates player row with global stats for the team
+        table and all rows for each champion played for the player table
+        """
+
+        team_table_row = {}
         team_table_row['name'] = self.name
         team_table_row['kills per game'] = self.kills/self.games
         team_table_row['deaths per game'] = self.deaths/self.games
