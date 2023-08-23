@@ -1,6 +1,4 @@
 # FlexQ-Stats
-Pulls League of Legends team stats from Riot Games' API
-**FlexQ Stats**
 
 Grabs game data from Riot Games' API and presents stats for each player on the team looked for.
 
